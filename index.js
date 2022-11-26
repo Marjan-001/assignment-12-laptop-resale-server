@@ -18,12 +18,21 @@ console.log(uri)
 async function run() {
     try {
         const categoriesCollection = client.db('laptopSwappers').collection('categories');
+        const productsCollection = client.db('laptopSwappers').collection('products');
         app.get('/categories', async (req, res) => {
 
             const query = {};
             const result = await categoriesCollection.find(query).toArray();
 
             res.send(result);
+        })
+        app.get('/categories/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { category_id: id }
+            const category = await productsCollection.find(query).toArray();
+            res.send(category);
+
+
         })
 
 
