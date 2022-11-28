@@ -22,6 +22,7 @@ async function run() {
 
         const bookingsCollection = client.db('laptopSwappers').collection('bookings');
         const usersCollection = client.db('laptopSwappers').collection('users');
+        const addedProductCollection = client.db('laptopSwappers').collection('addedproducts')
 
         app.get('/categories', async (req, res) => {
 
@@ -91,6 +92,30 @@ async function run() {
             const user = await usersCollection.findOne(query);
             res.send({ isAdmin: user?.role === 'admin' });
         })
+        app.get('/users/seller/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email };
+            const user = await usersCollection.findOne(query);
+            res.send({ isSeller: user?.role === 'seller' });
+        })
+
+        app.get('/brand', async (req, res) => {
+            const query = {};
+            const result = await categoriesCollection.find(query).project({ name: 1 }).toArray()
+            res.send(result)
+
+        })
+        app.post('/addedproducts', async (req, res) => {
+            const addproduct = req.body;
+            const result = await addedProductCollection.insertOne(addproduct);
+            res.send(result);
+        })
+        app.get('/addedproducts', async (req, res) => {
+            const query = {};
+            const result = await addedProductCollection.find(query).toArray();
+            res.send(result)
+        })
+
         // app.get('/buyer/:email', async (req, res) => {
         //     const email = req.params.email;
         //     // const email = req.params.email;
