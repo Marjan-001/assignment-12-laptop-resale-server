@@ -21,6 +21,7 @@ async function run() {
         const productsCollection = client.db('laptopSwappers').collection('products');
 
         const bookingsCollection = client.db('laptopSwappers').collection('bookings');
+        const usersCollection = client.db('laptopSwappers').collection('users');
 
         app.get('/categories', async (req, res) => {
 
@@ -37,12 +38,51 @@ async function run() {
 
 
         })
+        app.get('/bookings', async (req, res) => {
+            const email = req.query.email;
+
+
+
+
+            const query = { email: email };
+            const bookings = await bookingsCollection.find(query).toArray();
+            res.send(bookings);
+        });
         app.post('/bookings', async (req, res) => {
             const booking = req.body;
             const result = await bookingsCollection.insertOne(booking);
             res.send(result);
         })
+        app.post('/users', async (req, res) => {
+            const user = req.body;
+            console.log(user);
+            const result = await usersCollection.insertOne(user);
+            res.send(result);
+        });
+        app.get('/users', async (req, res) => {
+            // const email = req.query.email;
 
+            const query = {};
+            const users = await usersCollection.find(query).toArray();
+            res.send(users);
+        })
+
+
+        app.get('/sellers', async (req, res) => {
+
+            const query = { role: "seller" };
+            const result = await usersCollection.find(query).toArray();
+            res.send(result);
+        }
+        )
+        // app.get('/buyer/:email', async (req, res) => {
+        //     const email = req.params.email;
+        //     // const email = req.params.email;
+        //     const query = { email }
+        //     const user = await usersCollection.findOne(query);
+        //     console.log(user);
+        //     res.send({ isBuyer: user?.role === 'buyer' });
+        // })
 
     }
     finally {
