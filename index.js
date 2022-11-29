@@ -158,14 +158,7 @@ async function run() {
             res.send(result);
         })
 
-        // app.get('/buyer/:email', async (req, res) => {
-        //     const email = req.params.email;
-        //     // const email = req.params.email;
-        //     const query = { email }
-        //     const user = await usersCollection.findOne(query);
-        //     console.log(user);
-        //     res.send({ isBuyer: user?.role === 'buyer' });
-        // })
+
 
     }
     finally {
